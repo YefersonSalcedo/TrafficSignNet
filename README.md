@@ -13,6 +13,19 @@ TrafficSignNet es un sistema de clasificación de señales de tránsito utilizan
 - **Organización**: Estructura de carpetas por clase
 - **Fuente**: [GTSRB - German Traffic Sign Dataset](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign)
 
+## Descarga de Modelos Pre-entrenados
+
+Los modelos entrenados y archivos de configuración están disponibles en Google Drive:
+
+**[Descargar Modelos y Configuración](https://drive.google.com/drive/folders/1VhpfUbm3aIpbQ0h_fYqJ8iJnjLEHyLqc?usp=sharing)**
+
+Esta carpeta incluye:
+- `mejor_modelo.keras` - Mejor modelo guardado durante el entrenamiento
+- `modelo_final.keras` - Modelo final después de 5 épocas
+- `class_names.json` - Mapeo de las 43 clases de señales
+
+> **Nota**: Descarga estos archivos y colócalos en la raíz del proyecto para utilizar el modelo sin necesidad de re-entrenar.
+
 ## Tecnologías Utilizadas
 
 - **TensorFlow/Keras**: Framework principal para deep learning
@@ -65,9 +78,32 @@ Después de 5 épocas de entrenamiento:
 | **Loss** | 0.0161 |
 | **Tiempo por época** | ~70 minutos |
 
+## Inicio Rápido
+
+### Opción 1: Usar Modelo Pre-entrenado
+
+```python
+import tensorflow as tf
+import json
+
+# 1. Descargar archivos de Google Drive (enlace arriba)
+
+# 2. Cargar el modelo
+model = tf.keras.models.load_model("mejor_modelo.keras")
+
+# 3. Cargar nombres de clases
+with open("class_names.json", "r") as f:
+    class_names = json.load(f)
+
+# 4. Realizar predicciones
+# (ver sección de Funcionalidades Principales)
+```
+
+### Opción 2: Entrenar desde Cero
+
+Ejecutar el notebook `traffic_sign_classifier.ipynb` completo.
 
 ## Funcionalidades Principales
-
 
 ### 1. Guardado Automático del Mejor Modelo
 
@@ -80,7 +116,8 @@ checkpoint = ModelCheckpoint(
     verbose=1
 )
 ```
-## Entrenamiento Continuado
+
+### 2. Entrenamiento Continuado
 
 Para continuar el entrenamiento desde un modelo guardado:
 
@@ -97,7 +134,7 @@ history = model.fit(
 )
 ```
 
-### 2. Sistema de Prueba Automático
+### 3. Sistema de Prueba Automático
 
 ```python
 prueba_completa(model, carpeta_pruebas, carpeta_meta, class_names)
@@ -107,13 +144,11 @@ prueba_completa(model, carpeta_pruebas, carpeta_meta, class_names)
 - Realiza la predicción utilizando el modelo entrenado
 - Muestra comparación visual con la imagen de referencia
 
-### 3. Visualización de Resultados
+### 4. Visualización de Resultados
 
 Muestra una comparación lado a lado:
 - **Izquierda**: Imagen de prueba con nombre de archivo
 - **Derecha**: Señal de referencia con clase predicha
-
-
 
 ## Parámetros de Configuración
 
